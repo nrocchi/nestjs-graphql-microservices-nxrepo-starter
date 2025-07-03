@@ -1,0 +1,91 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Initialize Project",
+      "type": "shell",
+      "command": "pnpm project:init",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Reset Project",
+      "type": "shell",
+      "command": "pnpm project:reset",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start All Services",
+      "type": "shell",
+      "command": "pnpm dev",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Docker Databases",
+      "type": "shell",
+      "command": "docker-compose up postgres-users postgres-products -d",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Stop Docker Databases",
+      "type": "shell",
+      "command": "docker-compose down",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Prisma Studio - Users",
+      "type": "shell",
+      "command": "pnpm prisma:studio:users",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Prisma Studio - Products",
+      "type": "shell",
+      "command": "pnpm prisma:studio:products",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "pnpm test",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint Project",
+      "type": "shell",
+      "command": "pnpm lint",
+      "group": "test",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "Generate Prisma Clients",
+      "dependsOn": ["Generate Prisma Client - Users", "Generate Prisma Client - Products"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Prisma Client - Users",
+      "type": "shell",
+      "command": "pnpm prisma:generate:users",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Prisma Client - Products",
+      "type": "shell",
+      "command": "pnpm prisma:generate:products",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

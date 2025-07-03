@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug API Gateway",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "start:gateway"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/apps/api-gateway/.env"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Users Service",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "start:users"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/apps/users-service/.env"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Products Service",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "start:products"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/apps/products-service/.env"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug All Services",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "dev"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

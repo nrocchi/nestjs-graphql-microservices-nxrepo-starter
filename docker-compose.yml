@@ -1,0 +1,85 @@
+services:
+  postgres-users:
+    image: postgres:16-alpine
+    container_name: nestjs-users-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - users-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  postgres-products:
+    image: postgres:16-alpine
+    container_name: nestjs-products-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: products_db
+    ports:
+      - '5433:5432'
+    volumes:
+      - products-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  users-service:
+    build:
+      context: .
+      dockerfile: apps/users-service/Dockerfile
+    container_name: nestjs-users-service
+    environment:
+      DATABASE_URL: postgresql://user:password@postgres-users:5432/users_db?schema=public
+      PORT: 3001
+    ports:
+      - '3001:3001'
+    depends_on:
+      - postgres-users
+    networks:
+      - microservices-network
+    command: sh -c "npx prisma migrate deploy && npm run start:users"
+
+  products-service:
+    build:
+      context: .
+      dockerfile: apps/products-service/Dockerfile
+    container_name: nestjs-products-service
+    environment:
+      DATABASE_URL: postgresql://user:password@postgres-products:5432/products_db?schema=public
+      PORT: 3002
+    ports:
+      - '3002:3002'
+    depends_on:
+      - postgres-products
+    networks:
+      - microservices-network
+    command: sh -c "npx prisma migrate deploy && npm run start:products"
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: apps/api-gateway/Dockerfile
+    container_name: nestjs-api-gateway
+    environment:
+      PORT: 3000
+      USERS_SERVICE_URL: http://users-service:3001/graphql
+      PRODUCTS_SERVICE_URL: http://products-service:3002/graphql
+    ports:
+      - '3000:3000'
+    depends_on:
+      - users-service
+      - products-service
+    networks:
+      - microservices-network
+
+volumes:
+  users-db-data:
+  products-db-data:
+
+networks:
+  microservices-network:
+    driver: bridge

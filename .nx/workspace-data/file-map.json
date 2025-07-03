@@ -1,0 +1,545 @@
+{
+  "version": "6.0",
+  "nxVersion": "21.2.2",
+  "pathMappings": {
+    "@app/common-exceptions": [
+      "libs/common/exceptions/src/index.ts"
+    ],
+    "@app/common-utils": [
+      "libs/common/utils/src/index.ts"
+    ],
+    "@app/shared-config": [
+      "libs/shared/config/src/index.ts"
+    ],
+    "@app/shared-interfaces": [
+      "libs/shared/interfaces/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".npmrc",
+        "hash": "161110438593917206"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "11039555799044607920"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "3856811526445146677"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "5407418692668764289"
+      },
+      {
+        "file": "commitlint.config.js",
+        "hash": "2806144176694143823"
+      },
+      {
+        "file": "package.json",
+        "hash": "14511855044985592731"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".lintstagedrc.json",
+        "hash": "9128724827212058319"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "2124421488811613988"
+      },
+      {
+        "file": "scripts/reset-project.sh",
+        "hash": "15783574868545048216"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "4901182385100006247"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "13688076957792789813"
+      },
+      {
+        "file": ".husky/pre-commit",
+        "hash": "11200534014804190460"
+      },
+      {
+        "file": "scripts/init-project.sh",
+        "hash": "13499171217481594315"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "9924535526140644555"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "1845346397709596901"
+      },
+      {
+        "file": ".husky/commit-msg",
+        "hash": "2231801709595657094"
+      },
+      {
+        "file": "README.md",
+        "hash": "9365692935105142756"
+      },
+      {
+        "file": "nx.json",
+        "hash": "4909426873717373470"
+      },
+      {
+        "file": ".markdownlint.json",
+        "hash": "4678080513713249394"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "15028961286281177570"
+      },
+      {
+        "file": "README-NEW.md",
+        "hash": "15419663005665648291"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "17023029639422558377"
+      },
+      {
+        "file": "eslint.config.js",
+        "hash": "7685343242086348922"
+      }
+    ],
+    "projectFileMap": {
+      "utils": [
+        {
+          "file": "libs/common/utils/README.md",
+          "hash": "14342862180974447819"
+        },
+        {
+          "file": "libs/common/utils/jest.config.ts",
+          "hash": "17806634141476004460"
+        },
+        {
+          "file": "libs/common/utils/project.json",
+          "hash": "4778887014815728967"
+        },
+        {
+          "file": "libs/common/utils/src/index.ts",
+          "hash": "2496903152356729810"
+        },
+        {
+          "file": "libs/common/utils/src/lib/validation.utils.ts",
+          "hash": "5389030072984995213"
+        },
+        {
+          "file": "libs/common/utils/tsconfig.json",
+          "hash": "9505886339790543345"
+        },
+        {
+          "file": "libs/common/utils/tsconfig.lib.json",
+          "hash": "5554291030212586824"
+        },
+        {
+          "file": "libs/common/utils/tsconfig.spec.json",
+          "hash": "7114099973047683197"
+        }
+      ],
+      "products-service": [
+        {
+          "file": "apps/products-service/.env.example",
+          "hash": "14542645644108284997"
+        },
+        {
+          "file": "apps/products-service/Dockerfile",
+          "hash": "14188114873568973307"
+        },
+        {
+          "file": "apps/products-service/jest.config.ts",
+          "hash": "4130523369235948279"
+        },
+        {
+          "file": "apps/products-service/package.json",
+          "hash": "1304258187665715778"
+        },
+        {
+          "file": "apps/products-service/prisma/schema.prisma",
+          "hash": "502997720112315399"
+        },
+        {
+          "file": "apps/products-service/prisma/seed.ts",
+          "hash": "13539661119913902977"
+        },
+        {
+          "file": "apps/products-service/project.json",
+          "hash": "384055773667195275"
+        },
+        {
+          "file": "apps/products-service/src/app/app.module.ts",
+          "hash": "17002383672933275076",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/graphql",
+            "npm:@nestjs/apollo",
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/prisma/prisma.module.ts",
+          "hash": "8216479145703643961",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/prisma/prisma.service.ts",
+          "hash": "5035606667876254195",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/dto/create-product.input.ts",
+          "hash": "3706641943469740967",
+          "deps": [
+            "npm:@nestjs/graphql",
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/dto/update-product.input.ts",
+          "hash": "18246103950227258954",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/entities/product.entity.ts",
+          "hash": "824233448193529379",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/entities/user.entity.ts",
+          "hash": "10498315079918490780",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/products.module.ts",
+          "hash": "1635095282312939572",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/products.resolver.ts",
+          "hash": "7372521194354868421",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/products.service.ts",
+          "hash": "276018813366609355",
+          "deps": [
+            "npm:@nestjs/common",
+            "utils",
+            "exceptions"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/app/products/user.resolver.ts",
+          "hash": "1782624813905385931",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/products-service/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/products-service/src/main.ts",
+          "hash": "9183190133773412235",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/products-service/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/products-service/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/products-service/tsconfig.seed.json",
+          "hash": "18333970624217203704"
+        },
+        {
+          "file": "apps/products-service/tsconfig.spec.json",
+          "hash": "6898991939206723030"
+        },
+        {
+          "file": "apps/products-service/webpack.config.js",
+          "hash": "10425564565430882251",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "users-service": [
+        {
+          "file": "apps/users-service/.env.example",
+          "hash": "4554597060418482004"
+        },
+        {
+          "file": "apps/users-service/Dockerfile",
+          "hash": "8298408748237476295"
+        },
+        {
+          "file": "apps/users-service/jest.config.ts",
+          "hash": "8985711413891667611"
+        },
+        {
+          "file": "apps/users-service/package.json",
+          "hash": "4727019624652844859"
+        },
+        {
+          "file": "apps/users-service/prisma/schema.prisma",
+          "hash": "17796626539102626234"
+        },
+        {
+          "file": "apps/users-service/prisma/seed.ts",
+          "hash": "10875303389305676413",
+          "deps": [
+            "npm:bcryptjs"
+          ]
+        },
+        {
+          "file": "apps/users-service/project.json",
+          "hash": "5670266989018365742"
+        },
+        {
+          "file": "apps/users-service/src/app/app.module.ts",
+          "hash": "11092378427926486037",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/graphql",
+            "npm:@nestjs/apollo",
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/prisma/prisma.module.ts",
+          "hash": "8216479145703643961",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/prisma/prisma.service.ts",
+          "hash": "16779175343808656393",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/users/dto/create-user.input.ts",
+          "hash": "11832163525485987005",
+          "deps": [
+            "npm:@nestjs/graphql",
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/users/dto/update-user.input.ts",
+          "hash": "13108308244384799165",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/users/entities/user.entity.ts",
+          "hash": "12109321481654364518",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/users/users.module.ts",
+          "hash": "17611483813370213244",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/users/users.resolver.ts",
+          "hash": "13384498136942193499",
+          "deps": [
+            "npm:@nestjs/graphql"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/app/users/users.service.ts",
+          "hash": "2815636577823807313",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:bcryptjs",
+            "utils",
+            "exceptions"
+          ]
+        },
+        {
+          "file": "apps/users-service/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/users-service/src/main.ts",
+          "hash": "9893354057040861827",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/users-service/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/users-service/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/users-service/tsconfig.seed.json",
+          "hash": "13845785862089116590"
+        },
+        {
+          "file": "apps/users-service/tsconfig.spec.json",
+          "hash": "6898991939206723030"
+        },
+        {
+          "file": "apps/users-service/webpack.config.js",
+          "hash": "10425564565430882251",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "api-gateway": [
+        {
+          "file": "apps/api-gateway/.env.example",
+          "hash": "3801867366477877915"
+        },
+        {
+          "file": "apps/api-gateway/Dockerfile",
+          "hash": "12334023068226275428"
+        },
+        {
+          "file": "apps/api-gateway/jest.config.ts",
+          "hash": "8317439324809226302"
+        },
+        {
+          "file": "apps/api-gateway/project.json",
+          "hash": "5646052059275425306"
+        },
+        {
+          "file": "apps/api-gateway/src/app/app.module.ts",
+          "hash": "17244826513939908280",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/graphql",
+            "npm:@nestjs/apollo",
+            "npm:@apollo/gateway",
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api-gateway/src/main.ts",
+          "hash": "13911101046500254549",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/api-gateway/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/api-gateway/tsconfig.spec.json",
+          "hash": "6898991939206723030"
+        },
+        {
+          "file": "apps/api-gateway/webpack.config.js",
+          "hash": "10425564565430882251",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "exceptions": [
+        {
+          "file": "libs/common/exceptions/README.md",
+          "hash": "10919598025716859777"
+        },
+        {
+          "file": "libs/common/exceptions/jest.config.ts",
+          "hash": "5586174436013295450"
+        },
+        {
+          "file": "libs/common/exceptions/project.json",
+          "hash": "15230964267234411932"
+        },
+        {
+          "file": "libs/common/exceptions/src/index.ts",
+          "hash": "466957768866811426"
+        },
+        {
+          "file": "libs/common/exceptions/src/lib/exceptions.ts",
+          "hash": "7149897120536100799",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/common/exceptions/tsconfig.json",
+          "hash": "9505886339790543345"
+        },
+        {
+          "file": "libs/common/exceptions/tsconfig.lib.json",
+          "hash": "5554291030212586824"
+        },
+        {
+          "file": "libs/common/exceptions/tsconfig.spec.json",
+          "hash": "7114099973047683197"
+        }
+      ]
+    }
+  }
+}
