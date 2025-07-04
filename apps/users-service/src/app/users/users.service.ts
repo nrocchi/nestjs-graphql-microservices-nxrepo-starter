@@ -3,12 +3,13 @@ import { PrismaService } from '../prisma/prisma.service'
 import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
 import * as bcrypt from 'bcryptjs'
-import { isValidUUID } from '@app/common-utils'
+import { isValidUUID } from '@libs/utils'
 import {
   DuplicateResourceException,
   InvalidFormatException,
   ResourceNotFoundException,
-} from '@app/common-exceptions'
+} from '@libs/exceptions'
+import type { User as PrismaUser } from '@prisma/client-users'
 
 /**
  * Service responsible for managing user operations.
@@ -25,7 +26,7 @@ export class UsersService {
    * @returns Created user object
    * @throws BadRequestException if email already exists
    */
-  async create(createUserInput: CreateUserInput) {
+  async create(createUserInput: CreateUserInput): Promise<PrismaUser> {
     try {
       // Hash password before storing in database
       const hashedPassword = await bcrypt.hash(createUserInput.password, 10)
@@ -48,7 +49,7 @@ export class UsersService {
    * Retrieves all users from the database
    * @returns Array of all users
    */
-  findAll() {
+  findAll(): Promise<PrismaUser[]> {
     return this.prisma.user.findMany()
   }
 
@@ -59,7 +60,7 @@ export class UsersService {
    * @returns User object or null if not found
    * @throws BadRequestException if ID format is invalid
    */
-  findOne(id: string) {
+  findOne(id: string): Promise<PrismaUser | null> {
     // Validate UUID format
     if (!isValidUUID(id)) {
       throw new InvalidFormatException('ID', id)
@@ -75,7 +76,7 @@ export class UsersService {
    * @param email - User's email
    * @returns User object or null if not found
    */
-  findByEmail(email: string) {
+  findByEmail(email: string): Promise<PrismaUser | null> {
     return this.prisma.user.findUnique({
       where: { email },
     })
@@ -88,7 +89,7 @@ export class UsersService {
    * @returns Updated user object
    * @throws BadRequestException if ID format is invalid, user not found, or email already exists
    */
-  async update(id: string, updateUserInput: UpdateUserInput) {
+  async update(id: string, updateUserInput: UpdateUserInput): Promise<PrismaUser> {
     // Validate UUID format
     if (!isValidUUID(id)) {
       throw new InvalidFormatException('ID', id)
@@ -127,7 +128,7 @@ export class UsersService {
    * @returns Deleted user object
    * @throws BadRequestException if ID format is invalid or user not found
    */
-  async remove(id: string) {
+  async remove(id: string): Promise<PrismaUser> {
     // Validate UUID format
     if (!isValidUUID(id)) {
       throw new InvalidFormatException('ID', id)

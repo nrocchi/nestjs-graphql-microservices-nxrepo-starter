@@ -1,0 +1,55 @@
+query GetAllUsers {
+  users {
+    id
+    email
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+query GetUserById($id: String!) {
+  user(id: $id) {
+    id
+    email
+    name
+    createdAt
+    updatedAt
+    products {
+      id
+      name
+      description
+      price
+      sku
+      stock
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation CreateUser($createUserInput: CreateUserInput!) {
+  createUser(createUserInput: $createUserInput) {
+    id
+    email
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateUser($updateUserInput: UpdateUserInput!) {
+  updateUser(updateUserInput: $updateUserInput) {
+    id
+    email
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+mutation RemoveUser($id: String!) {
+  removeUser(id: $id) {
+    id
+  }
+}

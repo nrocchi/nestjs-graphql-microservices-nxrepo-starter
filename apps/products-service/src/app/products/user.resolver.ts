@@ -2,6 +2,7 @@ import { Parent, ResolveField, Resolver } from '@nestjs/graphql'
 import { ProductsService } from './products.service'
 import { Product } from './entities/product.entity'
 import { User } from './entities/user.entity'
+import type { IProduct as GeneratedProduct, IUser as GeneratedUser } from '../../generated/graphql'
 
 /**
  * User Resolver for the Products Service
@@ -41,7 +42,39 @@ export class UserResolver {
    * 5. Gateway combines the results and returns to client
    */
   @ResolveField(() => [Product])
-  products(@Parent() user: User) {
-    return this.productsService.findByUser(user.id)
+  async products(@Parent() user: User): Promise<GeneratedProduct[]> {
+    const products = await this.productsService.findByUser(user.id)
+    return products.map((product) => this.toGraphQLProduct(product))
+  }
+
+  /**
+   * Helper method to transform Prisma Product to GraphQL Product
+   * This ensures all fields match the generated GraphQL types
+   */
+  private toGraphQLProduct(prismaProduct: {
+    id: string
+    name: string
+    description: string
+    price: number
+    sku: string
+    stock: number
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+  }): GeneratedProduct {
+    return {
+      __typename: 'Product',
+      id: prismaProduct.id,
+      name: prismaProduct.name,
+      description: prismaProduct.description,
+      price: prismaProduct.price,
+      sku: prismaProduct.sku,
+      stock: prismaProduct.stock,
+      userId: prismaProduct.userId,
+      createdAt: prismaProduct.createdAt.toISOString(),
+      updatedAt: prismaProduct.updatedAt.toISOString(),
+      // The user field is resolved by the parent User
+      user: { __typename: 'User', id: prismaProduct.userId } as GeneratedUser,
+    }
   }
 }

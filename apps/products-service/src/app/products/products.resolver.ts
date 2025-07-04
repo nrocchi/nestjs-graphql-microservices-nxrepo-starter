@@ -12,6 +12,7 @@ import { Product } from './entities/product.entity'
 import { CreateProductInput } from './dto/create-product.input'
 import { UpdateProductInput } from './dto/update-product.input'
 import { User } from './entities/user.entity'
+import type { IProduct as GeneratedProduct, IUser as GeneratedUser } from '../../generated/graphql'
 
 /**
  * GraphQL Resolver for Product entity
@@ -28,8 +29,11 @@ export class ProductsResolver {
    * @returns The created product
    */
   @Mutation(() => Product)
-  createProduct(@Args('createProductInput') createProductInput: CreateProductInput) {
-    return this.productsService.create(createProductInput)
+  async createProduct(
+    @Args('createProductInput') createProductInput: CreateProductInput
+  ): Promise<GeneratedProduct> {
+    const product = await this.productsService.create(createProductInput)
+    return this.toGraphQLProduct(product)
   }
 
   /**
@@ -37,8 +41,9 @@ export class ProductsResolver {
    * @returns Array of all products
    */
   @Query(() => [Product], { name: 'products' })
-  findAll() {
-    return this.productsService.findAll()
+  async findAll(): Promise<GeneratedProduct[]> {
+    const products = await this.productsService.findAll()
+    return products.map((product) => this.toGraphQLProduct(product))
   }
 
   /**
@@ -47,8 +52,9 @@ export class ProductsResolver {
    * @returns The product if found, null otherwise
    */
   @Query(() => Product, { name: 'product', nullable: true })
-  findOne(@Args('id') id: string) {
-    return this.productsService.findOne(id)
+  async findOne(@Args('id') id: string): Promise<GeneratedProduct | null> {
+    const product = await this.productsService.findOne(id)
+    return product ? this.toGraphQLProduct(product) : null
   }
 
   /**
@@ -58,8 +64,9 @@ export class ProductsResolver {
    * @returns Array of products belonging to the user
    */
   @Query(() => [Product], { name: 'productsByUser' })
-  findByUser(@Args('userId') userId: string) {
-    return this.productsService.findByUser(userId)
+  async findByUser(@Args('userId') userId: string): Promise<GeneratedProduct[]> {
+    const products = await this.productsService.findByUser(userId)
+    return products.map((product) => this.toGraphQLProduct(product))
   }
 
   /**
@@ -68,8 +75,11 @@ export class ProductsResolver {
    * @returns The updated product
    */
   @Mutation(() => Product)
-  updateProduct(@Args('updateProductInput') updateProductInput: UpdateProductInput) {
-    return this.productsService.update(updateProductInput.id, updateProductInput)
+  async updateProduct(
+    @Args('updateProductInput') updateProductInput: UpdateProductInput
+  ): Promise<GeneratedProduct> {
+    const product = await this.productsService.update(updateProductInput.id, updateProductInput)
+    return this.toGraphQLProduct(product)
   }
 
   /**
@@ -78,8 +88,9 @@ export class ProductsResolver {
    * @returns The removed product
    */
   @Mutation(() => Product)
-  removeProduct(@Args('id') id: string) {
-    return this.productsService.remove(id)
+  async removeProduct(@Args('id') id: string): Promise<GeneratedProduct> {
+    const product = await this.productsService.remove(id)
+    return this.toGraphQLProduct(product)
   }
 
   /**
@@ -105,7 +116,7 @@ export class ProductsResolver {
    * @returns A reference object with __typename and id for federation
    */
   @ResolveField(() => User)
-  user(@Parent() product: Product) {
+  user(@Parent() product: GeneratedProduct): Partial<GeneratedUser> {
     // Return a reference that Apollo Gateway will resolve
     // The __typename tells Gateway which service owns this type
     return { __typename: 'User', id: product.userId }
@@ -119,7 +130,42 @@ export class ProductsResolver {
    * @returns The resolved product entity
    */
   @ResolveReference()
-  resolveReference(reference: { __typename: string; id: string }) {
-    return this.productsService.findOne(reference.id)
+  async resolveReference(reference: {
+    __typename: string
+    id: string
+  }): Promise<GeneratedProduct | null> {
+    const product = await this.productsService.findOne(reference.id)
+    return product ? this.toGraphQLProduct(product) : null
+  }
+
+  /**
+   * Helper method to transform Prisma Product to GraphQL Product
+   * This ensures all fields match the generated GraphQL types
+   */
+  private toGraphQLProduct(prismaProduct: {
+    id: string
+    name: string
+    description: string
+    price: number
+    sku: string
+    stock: number
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+  }): GeneratedProduct {
+    return {
+      __typename: 'Product',
+      id: prismaProduct.id,
+      name: prismaProduct.name,
+      description: prismaProduct.description,
+      price: prismaProduct.price,
+      sku: prismaProduct.sku,
+      stock: prismaProduct.stock,
+      userId: prismaProduct.userId,
+      createdAt: prismaProduct.createdAt.toISOString(),
+      updatedAt: prismaProduct.updatedAt.toISOString(),
+      // The user field is resolved by the @ResolveField decorator
+      user: { __typename: 'User', id: prismaProduct.userId } as GeneratedUser,
+    }
   }
 }

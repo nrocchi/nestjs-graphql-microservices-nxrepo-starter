@@ -4,7 +4,7 @@ import * as bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting users seed...')
+  console.warn('🌱 Starting users seed...')
 
   // Clear existing data
   await prisma.user.deleteMany()
@@ -21,10 +21,10 @@ async function main() {
       },
     })
     users.push(user)
-    console.log(`Created user: ${user.email}`)
+    console.warn(`Created user: ${user.email}`)
   }
 
-  console.log(`✅ Created ${users.length} users`)
+  console.warn(`✅ Created ${users.length} users`)
 }
 
 main()

@@ -15,10 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@app/common-exceptions": ["libs/common/exceptions/src/index.ts"],
-      "@app/common-utils": ["libs/common/utils/src/index.ts"],
-      "@app/shared-config": ["libs/shared/config/src/index.ts"],
-      "@app/shared-interfaces": ["libs/shared/interfaces/src/index.ts"]
+      "@libs/exceptions": ["libs/exceptions/src/index.ts"],
+      "@libs/utils": ["libs/utils/src/index.ts"],
+      "@libs/codegen": ["libs/codegen/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

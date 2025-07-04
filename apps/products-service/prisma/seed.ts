@@ -59,7 +59,7 @@ const productDescriptions = [
 ]
 
 async function main() {
-  console.log('🌱 Starting products seed...')
+  console.warn('🌱 Starting products seed...')
 
   // Clear existing data
   await prisma.product.deleteMany()
@@ -68,7 +68,7 @@ async function main() {
   let userIds: string[] = []
 
   try {
-    console.log('📡 Fetching users from users database...')
+    console.warn('📡 Fetching users from users database...')
     const users = await usersPrisma.user.findMany({
       select: { id: true },
       orderBy: { email: 'asc' },
@@ -76,9 +76,9 @@ async function main() {
 
     if (users.length > 0) {
       userIds = users.map((u) => u.id)
-      console.log(`✅ Found ${userIds.length} users in database`)
+      console.warn(`✅ Found ${userIds.length} users in database`)
     } else {
-      console.log('⚠️  No users found in database, using fallback IDs...')
+      console.warn('⚠️  No users found in database, using fallback IDs...')
       // Fallback to deterministic IDs if no users exist
       userIds = Array.from(
         { length: 20 },
@@ -87,7 +87,7 @@ async function main() {
     }
   } catch (error) {
     console.error('❌ Error fetching users:', error)
-    console.log('⚠️  Using fallback IDs...')
+    console.warn('⚠️  Using fallback IDs...')
     userIds = Array.from(
       { length: 20 },
       (_, i) => `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`
@@ -108,10 +108,10 @@ async function main() {
       },
     })
     products.push(product)
-    console.log(`Created product: ${product.name} (${product.sku})`)
+    console.warn(`Created product: ${product.name} (${product.sku})`)
   }
 
-  console.log(`✅ Created ${products.length} products`)
+  console.warn(`✅ Created ${products.length} products`)
 }
 
 main()

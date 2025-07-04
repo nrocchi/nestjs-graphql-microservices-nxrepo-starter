@@ -5,7 +5,16 @@ const typescriptEslintParser = require('@typescript-eslint/parser')
 
 module.exports = [
   {
-    ignores: ['node_modules/**', 'dist/**', '.nx/**', 'jest.preset.js', '**/*.config.js'],
+    ignores: [
+      'node_modules/**',
+      'dist/**',
+      '.nx/**',
+      'jest.preset.js',
+      '**/*.config.js',
+      '**/generated/**',
+      '**/*.generated.ts',
+      '**/*.generated.graphql'
+    ],
   },
   {
     files: ['**/*.ts', '**/*.tsx'],

@@ -1,0 +1,125 @@
+overwrite: true
+config:
+  skipTypename: false
+  addUnderscoreToArgsType: true
+  preResolveTypes: true
+generates:
+  # Gateway introspection - get the complete federated schema
+  apps/api-gateway/src/generated/gateway-schema.graphql:
+    schema:
+      - http://localhost:3000/graphql
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
+      includeIntrospectionTypes: true
+      federation: true
+      
+  # Gateway TypeScript types from the federated schema
+  apps/api-gateway/src/generated/graphql.ts:
+    schema:
+      - http://localhost:3000/graphql
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+    config:
+      enumsAsTypes: true
+      nonOptionalTypename: true
+      scalars:
+        DateTime: string
+      skipTypename: false
+      
+  # Users service schema extraction
+  apps/users-service/src/generated/users-schema.graphql:
+    schema:
+      - http://localhost:3001/graphql
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
+      federation: true
+      
+  # Users service types
+  apps/users-service/src/generated/graphql.ts:
+    schema:
+      - http://localhost:3001/graphql
+    plugins:
+      - add:
+          content: |
+            /* eslint-disable */
+            import type { I_Service, IQuery__EntitiesArgs } from '@libs/codegen';
+      - typescript
+      - typescript-resolvers
+    config:
+      enumsAsTypes: true
+      nonOptionalTypename: true
+      scalars:
+        DateTime: string
+      federation: true
+      avoidOptionals: true
+      mappers:
+        User: "@prisma/client-users#User as UserModel"
+      contextType: "@libs/codegen#IGraphQLContext"
+      typesPrefix: 'I'
+      typesSuffix: ''
+      skipTypename: false
+      useTypeImports: true
+        
+  # Products service schema extraction
+  apps/products-service/src/generated/products-schema.graphql:
+    schema:
+      - http://localhost:3002/graphql
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
+      federation: true
+      
+  # Products service types
+  apps/products-service/src/generated/graphql.ts:
+    schema:
+      - http://localhost:3002/graphql
+    plugins:
+      - add:
+          content: |
+            /* eslint-disable */
+            import type { I_Service, IQuery__EntitiesArgs } from '@libs/codegen';
+      - typescript
+      - typescript-resolvers
+    config:
+      enumsAsTypes: true
+      nonOptionalTypename: true
+      scalars:
+        DateTime: string
+      federation: true
+      avoidOptionals: true
+      mappers:
+        Product: "@prisma/client-products#Product as ProductModel"
+      contextType: "@libs/codegen#IGraphQLContext"
+      typesPrefix: 'I'
+      typesSuffix: ''
+      skipTypename: false
+      useTypeImports: true
+        
+  # Client SDK types (for frontend usage)
+  # Commented out - uncomment if you add a React frontend
+  # libs/codegen/src/generated/sdk.ts:
+  #   schema:
+  #     - http://localhost:3000/graphql
+  #   documents:
+  #     - "libs/codegen/src/operations/**/*.graphql"
+  #   plugins:
+  #     - add:
+  #         content: '/* eslint-disable */'
+  #     - typescript
+  #     - typescript-operations
+  #     - typescript-react-apollo
+  #   config:
+  #     enumsAsTypes: true
+  #     nonOptionalTypename: true
+  #     scalars:
+  #       DateTime: string
+  #     withHooks: true
+  #     withComponent: false
+  #     withHOC: false

@@ -3,6 +3,7 @@ import { UsersService } from './users.service'
 import { User } from './entities/user.entity'
 import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
+import type { IUser as GeneratedUser } from '../../generated/graphql'
 
 /**
  * GraphQL Resolver for User entity
@@ -19,8 +20,11 @@ export class UsersResolver {
    * @returns The created user
    */
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput)
+  async createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput
+  ): Promise<GeneratedUser> {
+    const user = await this.usersService.create(createUserInput)
+    return this.toGraphQLUser(user)
   }
 
   /**
@@ -28,8 +32,9 @@ export class UsersResolver {
    * @returns Array of all users
    */
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll()
+  async findAll(): Promise<GeneratedUser[]> {
+    const users = await this.usersService.findAll()
+    return users.map((user) => this.toGraphQLUser(user))
   }
 
   /**
@@ -38,8 +43,9 @@ export class UsersResolver {
    * @returns The user if found, null otherwise
    */
   @Query(() => User, { name: 'user', nullable: true })
-  findOne(@Args('id') id: string) {
-    return this.usersService.findOne(id)
+  async findOne(@Args('id') id: string): Promise<GeneratedUser | null> {
+    const user = await this.usersService.findOne(id)
+    return user ? this.toGraphQLUser(user) : null
   }
 
   /**
@@ -48,8 +54,11 @@ export class UsersResolver {
    * @returns The updated user
    */
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput)
+  async updateUser(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput
+  ): Promise<GeneratedUser> {
+    const user = await this.usersService.update(updateUserInput.id, updateUserInput)
+    return this.toGraphQLUser(user)
   }
 
   /**
@@ -58,8 +67,9 @@ export class UsersResolver {
    * @returns The removed user
    */
   @Mutation(() => User)
-  removeUser(@Args('id') id: string) {
-    return this.usersService.remove(id)
+  async removeUser(@Args('id') id: string): Promise<GeneratedUser> {
+    const user = await this.usersService.remove(id)
+    return this.toGraphQLUser(user)
   }
 
   /**
@@ -72,7 +82,32 @@ export class UsersResolver {
    * @returns The resolved user entity
    */
   @ResolveReference()
-  resolveReference(reference: { __typename: string; id: string }) {
-    return this.usersService.findOne(reference.id)
+  async resolveReference(reference: {
+    __typename: string
+    id: string
+  }): Promise<GeneratedUser | null> {
+    const user = await this.usersService.findOne(reference.id)
+    return user ? this.toGraphQLUser(user) : null
+  }
+
+  /**
+   * Helper method to transform Prisma User to GraphQL User
+   * This ensures all fields match the generated GraphQL types
+   */
+  private toGraphQLUser(prismaUser: {
+    id: string
+    email: string
+    name: string
+    createdAt: Date
+    updatedAt: Date
+  }): GeneratedUser {
+    return {
+      __typename: 'User',
+      id: prismaUser.id,
+      email: prismaUser.email,
+      name: prismaUser.name,
+      createdAt: prismaUser.createdAt.toISOString(),
+      updatedAt: prismaUser.updatedAt.toISOString(),
+    }
   }
 }

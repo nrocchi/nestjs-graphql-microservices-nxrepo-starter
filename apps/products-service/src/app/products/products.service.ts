@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { CreateProductInput } from './dto/create-product.input'
 import { UpdateProductInput } from './dto/update-product.input'
-import { isValidUUID } from '@app/common-utils'
+import { isValidUUID } from '@libs/utils'
 import {
   DuplicateResourceException,
   InvalidFormatException,
   ResourceNotFoundException,
-} from '@app/common-exceptions'
+} from '@libs/exceptions'
+import type { Product as PrismaProduct } from '@prisma/client-products'
 
 /**
  * Service responsible for managing product operations.
@@ -26,7 +27,7 @@ export class ProductsService {
    * @returns Created product object
    * @throws BadRequestException if userId format is invalid or SKU already exists
    */
-  async create(createProductInput: CreateProductInput) {
+  async create(createProductInput: CreateProductInput): Promise<PrismaProduct> {
     // Validate UUID format for userId
     if (!isValidUUID(createProductInput.userId)) {
       throw new InvalidFormatException('user ID', createProductInput.userId)
@@ -49,7 +50,7 @@ export class ProductsService {
    * Retrieves all products from the database
    * @returns Array of all products
    */
-  findAll() {
+  findAll(): Promise<PrismaProduct[]> {
     return this.prisma.product.findMany()
   }
 
@@ -60,7 +61,7 @@ export class ProductsService {
    * @returns Product object or null if not found
    * @throws BadRequestException if ID format is invalid
    */
-  findOne(id: string) {
+  findOne(id: string): Promise<PrismaProduct | null> {
     // Validate UUID format
     if (!isValidUUID(id)) {
       throw new InvalidFormatException('ID', id)
@@ -79,7 +80,7 @@ export class ProductsService {
    * @returns Array of products for the given user
    * @throws BadRequestException if userId format is invalid
    */
-  findByUser(userId: string) {
+  findByUser(userId: string): Promise<PrismaProduct[]> {
     // Validate UUID format
     if (!isValidUUID(userId)) {
       throw new InvalidFormatException('user ID', userId)
@@ -99,7 +100,7 @@ export class ProductsService {
    * @returns Updated product object
    * @throws BadRequestException if ID format is invalid, product not found, or SKU already exists
    */
-  async update(id: string, updateProductInput: UpdateProductInput) {
+  async update(id: string, updateProductInput: UpdateProductInput): Promise<PrismaProduct> {
     // Validate UUID format
     if (!isValidUUID(id)) {
       throw new InvalidFormatException('ID', id)
@@ -139,7 +140,7 @@ export class ProductsService {
    * @returns Deleted product object
    * @throws BadRequestException if ID format is invalid or product not found
    */
-  async remove(id: string) {
+  async remove(id: string): Promise<PrismaProduct> {
     // Validate UUID format
     if (!isValidUUID(id)) {
       throw new InvalidFormatException('ID', id)

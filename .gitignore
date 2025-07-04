@@ -48,3 +48,14 @@ apps/*/prisma/migrations
 
 # nx
 .nx/cache
+
+# ai
+CLAUDE.md
+.claude
+.mcp.json
+.cursor
+
+# generated files
+**/generated/
+*.generated.ts
+*.generated.graphql

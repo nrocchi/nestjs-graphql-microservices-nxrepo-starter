@@ -8,6 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![pnpm](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)](https://pnpm.io/)
+[![GraphQL Code Generator](https://img.shields.io/badge/GraphQL_Codegen-%23E10098.svg?style=for-the-badge&logo=graphql&logoColor=white)](https://the-guild.dev/graphql/codegen)
 
 ![NestJS](https://img.shields.io/badge/NestJS-v10.4.10-E0234E)
 ![GraphQL](https://img.shields.io/badge/GraphQL-v16.10.0-E10098)
@@ -17,6 +18,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.8.2-007ACC)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-43853D)
 ![NX](https://img.shields.io/badge/NX-v21.2.2-143055)
+![GraphQL Codegen](https://img.shields.io/badge/GraphQL_Codegen-v5.0.7-E10098)
 
 A production-ready starter template for building GraphQL microservices with NestJS,
 featuring Apollo Federation, Prisma, PostgreSQL, Docker, and NX monorepo architecture.
@@ -26,13 +28,60 @@ featuring Apollo Federation, Prisma, PostgreSQL, Docker, and NX monorepo archite
 
 ## Table of Contents
 
-- [Quick Start](#quick-start)
-- [Architecture](#architecture)
-- [Development](#development)
-- [API Examples](#api-examples)
-- [Configuration](#configuration)
-- [Scripts Reference](#scripts-reference)
-- [Full API Documentation](#full-api-documentation)
+- [NestJS GraphQL Microservices Starter](#nestjs-graphql-microservices-starter)
+  - [Table of Contents](#table-of-contents)
+  - [Quick Start](#quick-start)
+    - [Prerequisites](#prerequisites)
+    - [Get Started in 3 Steps](#get-started-in-3-steps)
+    - [Access GraphQL Playgrounds](#access-graphql-playgrounds)
+  - [Architecture](#architecture)
+    - [System Overview](#system-overview)
+    - [Tech Stack](#tech-stack)
+    - [Key Features](#key-features)
+    - [Monorepo Structure](#monorepo-structure)
+  - [Development](#development)
+    - [Starting Development](#starting-development)
+      - [Recommended: Using Concurrently](#recommended-using-concurrently)
+    - [Working with NX](#working-with-nx)
+    - [Using Shared Libraries](#using-shared-libraries)
+    - [Adding New Features](#adding-new-features)
+      - [Create a New Service](#create-a-new-service)
+      - [Create a Shared Library](#create-a-shared-library)
+  - [API Examples](#api-examples)
+    - [Get Users with Their Products](#get-users-with-their-products)
+    - [Create a New User](#create-a-new-user)
+    - [Create a Product](#create-a-product)
+  - [Configuration](#configuration)
+    - [Environment Variables](#environment-variables)
+    - [Database Management](#database-management)
+    - [Seeding Strategy](#seeding-strategy)
+  - [Scripts Reference](#scripts-reference)
+    - [Development Scripts](#development-scripts)
+    - [Build \& Test Scripts](#build--test-scripts)
+    - [Database Scripts](#database-scripts)
+    - [Docker Scripts](#docker-scripts)
+    - [Utility Scripts](#utility-scripts)
+    - [Code Generation Scripts](#code-generation-scripts)
+    - [Documentation Scripts](#documentation-scripts)
+  - [GraphQL Code Generation](#graphql-code-generation)
+    - [Features](#features)
+    - [Usage](#usage)
+    - [Automatic Integration](#automatic-integration)
+    - [Configuration](#configuration-1)
+    - [Generated Files](#generated-files)
+  - [Documentation](#documentation)
+    - [Quick Access](#quick-access)
+    - [Key Guides](#key-guides)
+    - [Generate Complete Documentation](#generate-complete-documentation)
+  - [Development Tips](#development-tips)
+    - [Prisma Migrations](#prisma-migrations)
+    - [Debugging](#debugging)
+      - [Service Issues](#service-issues)
+      - [Database Issues](#database-issues)
+      - [GraphQL Issues](#graphql-issues)
+    - [Performance Tips](#performance-tips)
+  - [Author](#author)
+  - [License](#license)
 
 ## Quick Start
 
@@ -103,6 +152,8 @@ pnpm dev
 - 🛡️ **Shared Libraries** - Common exceptions and utilities across services
 - ⚡ **Hot Reload** - Instant feedback during development
 - 🔍 **Type Safety** - Full TypeScript with Prisma generated types
+- 🚀 **Code Generation** - Automatic TypeScript types from GraphQL schemas
+- 🎯 **Concurrent Development** - Run all services with a single command using concurrently
 
 ### Monorepo Structure
 
@@ -188,6 +239,8 @@ if (!isValidUUID(id)) {
 nx g @nx/nest:app my-service
 ```
 
+> 📚 **For complete setup instructions**, see the **[Adding a New Service Guide](./docs/03-development/01-adding-new-service.md)** which covers database setup, federation, and all configuration steps.
+
 #### Create a Shared Library
 
 ```bash
@@ -253,7 +306,7 @@ mutation CreateProduct($input: CreateProductInput!) {
 }
 ```
 
-See [Full API Documentation](#full-api-documentation) for complete reference.
+> 📖 **For complete API reference**, see the **[Full API Documentation](./docs/api-documentation.md)** with detailed examples, federation queries, and error handling.
 
 ## Configuration
 
@@ -311,7 +364,9 @@ The project implements intelligent seeding:
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start all services with concurrently |
+| `pnpm dev` | Start all services (checks for existing types) |
+| `pnpm dev:init` | Start services and generate types after 10s |
+| `pnpm dev:watch` | Start services with automatic type regeneration |
 | `pnpm start:gateway` | Start API Gateway only |
 | `pnpm start:users` | Start Users service only |
 | `pnpm start:products` | Start Products service only |
@@ -320,7 +375,7 @@ The project implements intelligent seeding:
 
 | Command | Description |
 |---------|-------------|
-| `pnpm build` | Build all applications |
+| `pnpm build` | Build all applications (requires generated types) |
 | `pnpm test` | Run all tests |
 | `pnpm lint` | Lint all projects |
 | `pnpm lint:markdown` | Lint markdown files |
@@ -354,303 +409,126 @@ The project implements intelligent seeding:
 |---------|-------------|
 | `pnpm project:init` | Complete project setup |
 | `pnpm project:reset` | Reset databases and Docker |
-| `pnpm lint` | Lint all projects |
-| `pnpm test` | Test all projects |
+| `pnpm prepare` | Install Git hooks with Husky |
 
----
+### Code Generation Scripts
 
-## Full API Documentation
+| Command | Description |
+|---------|-------------|
+| `pnpm codegen` | Generate TypeScript types from GraphQL schemas |
+| `pnpm codegen:watch` | Generate types in watch mode |
 
-<details>
-<summary>📖 Click to expand complete API reference</summary>
+### Documentation Scripts
 
-### Users Service Queries
+| Command | Description |
+|---------|-------------|
+| `pnpm docs:generate` | Generate single HTML file with all documentation |
 
-#### Get All Users
+## GraphQL Code Generation
 
-```graphql
-query GetAllUsers {
-  users {
-    id
-    email
-    name
-    createdAt
-    updatedAt
-  }
-}
+This project uses [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) to automatically generate TypeScript types from GraphQL schemas, ensuring type safety across the entire stack.
+
+> **⚠️ Important**: Code generation requires services to be running as it fetches schemas from live GraphQL endpoints. Use `pnpm dev:init` for first-time setup or after schema changes.
+
+### Features
+
+- **Automatic Type Generation**: TypeScript types generated from GraphQL schemas
+- **Federation Support**: Types for Apollo Federation directives
+- **Watch Mode**: Auto-regenerate types on schema changes
+- **Resolver Types**: Strongly typed resolvers with proper parent types
+- **Build Integration**: Automatically runs before build and dev commands
+
+### Usage
+
+```bash
+# Manual generation
+pnpm codegen
+
+# Watch mode (standalone)
+pnpm codegen:watch
+
+# Development with watch mode (recommended)
+pnpm dev:watch
 ```
 
-#### Get User by ID
+### Automatic Integration
 
-```graphql
-query GetUser($id: String!) {
-  user(id: $id) {
-    id
-    email
-    name
-    createdAt
-    updatedAt
-  }
-}
+Codegen is integrated into the build and development workflow:
+
+- **`pnpm dev`**: Starts services (checks for existing generated types)
+- **`pnpm dev:init`**: Starts services and generates types after services are ready
+- **`pnpm build`**: Builds all services (checks for existing generated types)
+- **`pnpm dev:watch`**: Starts services with automatic type regeneration on schema changes
+
+**First-time setup or after schema changes:**
+
+```bash
+# Use this when types need to be generated
+pnpm dev:init
 ```
 
-### Users Service Mutations
+**Regular development:**
 
-#### Create User
-
-```graphql
-mutation CreateUser($input: CreateUserInput!) {
-  createUser(createUserInput: $input) {
-    id
-    email
-    name
-    createdAt
-  }
-}
-
-# Variables
-{
-  "input": {
-    "email": "user@example.com",
-    "name": "John Doe",
-    "password": "securepassword123"
-  }
-}
+```bash
+# Use this when types already exist
+pnpm dev
 ```
 
-#### Update User
+### Configuration
 
-```graphql
-mutation UpdateUser($input: UpdateUserInput!) {
-  updateUser(updateUserInput: $input) {
-    id
-    email
-    name
-    updatedAt
-  }
-}
+The codegen is configured in `codegen.yml` to:
 
-# Variables
-{
-  "input": {
-    "id": "user-id-here",
-    "name": "Jane Doe",
-    "email": "newemail@example.com"
-  }
-}
+- Generate types for each service (users, products, gateway)
+- Support Apollo Federation with proper type extensions
+- Include resolver types with parent type mappings
+- Map Prisma models to GraphQL types
+- Generate both TypeScript types and GraphQL schema files
+
+### Generated Files
+
+Each service gets its own generated files:
+
+- `apps/[service]/src/generated/graphql.ts` - TypeScript types
+- `apps/[service]/src/generated/[service]-schema.graphql` - Extracted schema
+
+See [Code Generation Guide](./docs/03-development/03-codegen-guide.md) for detailed setup and best practices.
+
+## Documentation
+
+Complete documentation is organized by category with numerical prefixes for easy navigation.
+
+### Quick Access
+
+- 📖 **[Documentation Index](./docs/README.md)** - Browse all documentation
+- 📄 **[Documentation Guide](./docs/01-getting-started/04-documentation-guide.md)** - How to generate and use HTML docs
+
+### Key Guides
+
+- 📘 [API Documentation](./docs/01-getting-started/01-api-documentation.md) - Complete GraphQL API reference
+- 🚀 [Development Workflow](./docs/01-getting-started/02-development-workflow.md) - Day-to-day development guide
+- 🏗️ [Adding a New Service](./docs/03-development/01-adding-new-service.md) - Create new microservices
+- 🔧 [Troubleshooting](./docs/01-getting-started/03-troubleshooting.md) - Common issues and solutions
+
+### Generate Complete Documentation
+
+```bash
+# Generate a single HTML file with all documentation
+pnpm docs:generate
+
+# Open the generated file
+open docs/all-documentation.html
+
+# Or serve it locally
+npx serve docs
 ```
 
-#### Delete User
+The generated documentation includes:
 
-```graphql
-mutation RemoveUser($id: String!) {
-  removeUser(id: $id) {
-    id
-    email
-    name
-  }
-}
-```
-
-### Products Service Queries
-
-#### Get All Products
-
-```graphql
-query GetAllProducts {
-  products {
-    id
-    name
-    description
-    price
-    sku
-    stock
-    userId
-    createdAt
-    updatedAt
-  }
-}
-```
-
-#### Get Product by ID
-
-```graphql
-query GetProduct($id: String!) {
-  product(id: $id) {
-    id
-    name
-    description
-    price
-    sku
-    stock
-    userId
-    createdAt
-    updatedAt
-  }
-}
-```
-
-#### Get Products by User
-
-```graphql
-query GetProductsByUser($userId: String!) {
-  productsByUser(userId: $userId) {
-    id
-    name
-    description
-    price
-    sku
-    stock
-    createdAt
-  }
-}
-```
-
-### Products Service Mutations
-
-#### Create Product
-
-```graphql
-mutation CreateProduct($input: CreateProductInput!) {
-  createProduct(createProductInput: $input) {
-    id
-    name
-    description
-    price
-    sku
-    stock
-    userId
-    createdAt
-  }
-}
-
-# Variables
-{
-  "input": {
-    "name": "Laptop Pro",
-    "description": "High-performance laptop",
-    "price": 1299.99,
-    "sku": "LAPTOP-001",
-    "stock": 50,
-    "userId": "user-id-here"
-  }
-}
-```
-
-#### Update Product
-
-```graphql
-mutation UpdateProduct($input: UpdateProductInput!) {
-  updateProduct(updateProductInput: $input) {
-    id
-    name
-    description
-    price
-    sku
-    stock
-    updatedAt
-  }
-}
-
-# Variables
-{
-  "input": {
-    "id": "product-id-here",
-    "price": 999.99,
-    "stock": 25
-  }
-}
-```
-
-#### Delete Product
-
-```graphql
-mutation RemoveProduct($id: String!) {
-  removeProduct(id: $id) {
-    id
-    name
-    sku
-  }
-}
-```
-
-### Federated Queries (API Gateway)
-
-#### Users with Products
-
-```graphql
-query GetUsersWithTheirProducts {
-  users {
-    id
-    email
-    name
-    products {
-      id
-      name
-      price
-      stock
-      sku
-    }
-  }
-}
-```
-
-#### Products with Owner
-
-```graphql
-query GetProductsWithOwners {
-  products {
-    id
-    name
-    description
-    price
-    stock
-    user {
-      id
-      email
-      name
-    }
-  }
-}
-```
-
-#### Complex Federation Query
-
-```graphql
-query ComplexFederatedQuery {
-  users {
-    id
-    email
-    name
-    createdAt
-    updatedAt
-    products {
-      id
-      name
-      description
-      price
-      sku
-      stock
-      createdAt
-      updatedAt
-    }
-  }
-  products {
-    id
-    name
-    price
-    user {
-      id
-      email
-      name
-    }
-  }
-}
-```
-
-</details>
-
----
+- ✅ All 16 documentation files in a single HTML
+- ✅ Interactive navigation with table of contents
+- ✅ Syntax highlighting and Mermaid diagram support
+- ✅ Dark theme optimized for developers
+- ✅ Searchable content (Ctrl+F)
 
 ## Development Tips
 

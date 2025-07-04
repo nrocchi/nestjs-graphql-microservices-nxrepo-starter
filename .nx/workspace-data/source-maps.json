@@ -641,9 +641,9 @@
       "nx/target-defaults"
     ]
   },
-  "libs/common/exceptions": {
+  "libs/exceptions": {
     "root": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets": [
@@ -715,43 +715,43 @@
       "@nx/eslint/plugin"
     ],
     "name": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "$schema": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "sourceRoot": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "projectType": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "tags": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets.test": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets.test.executor": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets.test.outputs": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets.test.options": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets.test.options.jestConfig": [
-      "libs/common/exceptions/project.json",
+      "libs/exceptions/project.json",
       "nx/core/project-json"
     ],
     "targets.test.cache": [
@@ -783,9 +783,9 @@
       "nx/target-defaults"
     ]
   },
-  "libs/common/utils": {
+  "libs/utils": {
     "root": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets": [
@@ -857,43 +857,43 @@
       "@nx/eslint/plugin"
     ],
     "name": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "$schema": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "sourceRoot": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "projectType": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "tags": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets.test": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets.test.executor": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets.test.outputs": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets.test.options": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets.test.options.jestConfig": [
-      "libs/common/utils/project.json",
+      "libs/utils/project.json",
       "nx/core/project-json"
     ],
     "targets.test.cache": [

@@ -1,0 +1,80 @@
+query GetAllProducts {
+  products {
+    id
+    name
+    description
+    price
+    sku
+    stock
+    userId
+    createdAt
+    updatedAt
+  }
+}
+
+query GetProductById($id: String!) {
+  product(id: $id) {
+    id
+    name
+    description
+    price
+    sku
+    stock
+    userId
+    createdAt
+    updatedAt
+    user {
+      id
+      email
+      name
+    }
+  }
+}
+
+query GetProductsByUser($userId: String!) {
+  productsByUser(userId: $userId) {
+    id
+    name
+    description
+    price
+    sku
+    stock
+    userId
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CreateProduct($createProductInput: CreateProductInput!) {
+  createProduct(createProductInput: $createProductInput) {
+    id
+    name
+    description
+    price
+    sku
+    stock
+    userId
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateProduct($updateProductInput: UpdateProductInput!) {
+  updateProduct(updateProductInput: $updateProductInput) {
+    id
+    name
+    description
+    price
+    sku
+    stock
+    userId
+    createdAt
+    updatedAt
+  }
+}
+
+mutation RemoveProduct($id: String!) {
+  removeProduct(id: $id) {
+    id
+  }
+}
